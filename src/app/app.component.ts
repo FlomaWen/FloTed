@@ -1,38 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { ArticlesListService } from './articles-list.service';
-import {
-  HttpClientModule,
-  HttpClient,
-  provideHttpClient,
-  withFetch,
-} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { AuthService } from './auth/auth.service';
 @Component({
   selector: 'app-root',
   standalone: true,
 
-  imports: [RouterOutlet, HttpClientModule, CommonModule],
+  imports: [RouterOutlet, HttpClientModule, CommonModule, RouterModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [ArticlesListService],
+  providers: [AuthService],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'FloTed';
-  data: any;
-  articles: any;
+  isLoggedIn = false;
 
-  constructor(private articlesListService: ArticlesListService) {}
+  constructor(
+    public authService: AuthService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.articlesListService.getData().subscribe(
-      (response) => {
-        this.articles = response;
-        console.log(this.articles);
-      },
-      (error) => {
-        console.log("Erreur de l'appel API :", error);
-      }
-    );
+    this.isLoggedIn = this.authService.isLoggedIn();
+    this.authService.currentUser.subscribe(() => {
+      this.isLoggedIn = this.authService.isLoggedIn();
+      this.cdr.detectChanges();
+    });
+  }
+
+  logout() {
+    this.authService.logout();
+    this.isLoggedIn = false;
+    this.cdr.detectChanges();
   }
 }
