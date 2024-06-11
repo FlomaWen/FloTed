@@ -1,7 +1,14 @@
 <main class="main">
-  <div class="content">
-    <h1>{{ title }}</h1>
+  <div>
+    <h1>
+      <a routerLink="/"> {{ title }} </a>
+    </h1>
   </div>
+  <nav>
+    <button routerLink="/login" *ngIf="!isLoggedIn">Connexion</button>
+    <button routerLink="/register" *ngIf="!isLoggedIn">Inscription</button>
+    <button *ngIf="isLoggedIn" (click)="logout()">Déconnexion</button>
+  </nav>
 </main>
 
-<router-outlet />
+<router-outlet></router-outlet>
