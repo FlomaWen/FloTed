@@ -5,8 +5,9 @@
     </h1>
   </div>
   <nav>
-    <button routerLink="/login">Connexion</button>
-    <button routerLink="/register">Inscription</button>
+    <button routerLink="/login" *ngIf="!isLoggedIn">Connexion</button>
+    <button routerLink="/register" *ngIf="!isLoggedIn">Inscription</button>
+    <button *ngIf="isLoggedIn" (click)="logout()">Déconnexion</button>
   </nav>
 </main>
 

@@ -33,4 +33,6 @@ def login_user(username, password):
     user = users_collection.find_one({"username": username})
     if not user or not bcrypt.checkpw(password.encode('utf-8'), user['password']):
         return None
+    user["_id"] = str(user["_id"])
+    user.pop("password")
     return user
