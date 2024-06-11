@@ -1,38 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { ArticlesListService } from './articles-list.service';
-import {
-  HttpClientModule,
-  HttpClient,
-  provideHttpClient,
-  withFetch,
-} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-root',
   standalone: true,
 
-  imports: [RouterOutlet, HttpClientModule, CommonModule],
+  imports: [RouterOutlet, HttpClientModule, CommonModule, RouterModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   providers: [ArticlesListService],
 })
 export class AppComponent {
   title = 'FloTed';
-  data: any;
-  articles: any;
 
-  constructor(private articlesListService: ArticlesListService) {}
+  constructor(private router: Router) {}
 
-  ngOnInit() {
-    this.articlesListService.getData().subscribe(
-      (response) => {
-        this.articles = response;
-        console.log(this.articles);
-      },
-      (error) => {
-        console.log("Erreur de l'appel API :", error);
-      }
-    );
+  navigate(path: string) {
+    this.router.navigate([path]);
   }
 }

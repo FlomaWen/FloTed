@@ -1,0 +1,11 @@
+<div class="content">
+  <div *ngIf="articles">
+    <h1>Liste des Articles</h1>
+    <ul>
+      <li *ngFor="let article of articles">
+        <h2>{{ article.titre }}</h2>
+        <img [src]="article.image_url" alt="image" />
+      </li>
+    </ul>
+  </div>
+</div>
